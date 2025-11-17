@@ -1,14 +1,14 @@
 // ==UserScript==
 // @author         NvlblNm
-// @id             wayfarer-planner@NvlblNm
-// @name           Wayfarer Planner
+// @id             opr-planner@NvlblNm
+// @name           Opr Planner
 // @category       Layer
 // @version        1.181
-// @namespace      https://gitlab.com/NvlblNm/wayfarer/
-// @downloadURL    https://raw.githubusercontent.com/IITC-CE/Community-plugins/master/dist/NvlblNm/wayfarer-planner.user.js
-// @updateURL      https://raw.githubusercontent.com/IITC-CE/Community-plugins/master/dist/NvlblNm/wayfarer-planner.meta.js
-// @homepageURL    https://gitlab.com/NvlblNm/wayfarer/
-// @description    Place markers on the map for your candidates in Wayfarer.
+// @namespace      https://github.com/areskyo/Opr/
+// @downloadURL    https://raw.githubusercontent.com/areskyo/Opr/refs/heads/main/opr-planner.user.js
+// @updateURL      https://raw.githubusercontent.com/areskyo/Opr/refs/heads/main/opr-planner.user.js
+// @homepageURL    https://github.com/areskyo/Opr/
+// @description    Place markers on the map for your candidates in Opr.
 // @match          https://intel.ingress.com/*
 // @grant          none
 // ==/UserScript==
@@ -155,11 +155,11 @@ function wrapper(pluginInfo) {
     let settings = defaultSettings
 
     function saveSettings() {
-        localStorage.wayfarer_planner_settings = JSON.stringify(settings)
+        localStorage.opr_planner_settings = JSON.stringify(settings)
     }
 
     function loadSettings() {
-        const tmp = localStorage.wayfarer_planner_settings
+        const tmp = localStorage.opr_planner_settings
         if (!tmp) {
             upgradeSettings()
             return
@@ -205,10 +205,10 @@ function wrapper(pluginInfo) {
                     markercollection = JSON.parse(data)
                 } catch (e) {
                     console.log(
-                        'Wayfarer Planner. Exception parsing response: ',
+                        'Opr Planner. Exception parsing response: ',
                         e
                     ) // eslint-disable-line no-console
-                    alert('Wayfarer Planner. Exception parsing response.')
+                    alert('Opr Planner. Exception parsing response.')
                     return
                 }
                 processCustomMarkers()
@@ -216,9 +216,9 @@ function wrapper(pluginInfo) {
                 drawMarkers()
             },
             error: function (x, y, z) {
-                console.log('Wayfarer Planner. Error message: ', x, y, z) // eslint-disable-line no-console
+                console.log('Opr Planner. Error message: ', x, y, z) // eslint-disable-line no-console
                 alert(
-                    "Wayfarer Planner. Failed to retrieve data from the scriptURL.\r\nVerify that you're using the right URL and that you don't use any extension that blocks access to google."
+                    "Opr Planner. Failed to retrieve data from the scriptURL.\r\nVerify that you're using the right URL and that you don't use any extension that blocks access to google."
                 )
             }
         })
@@ -301,7 +301,7 @@ function wrapper(pluginInfo) {
             if (!data.initialized) {
                 const layer = new L.featureGroup()
                 data.layer = layer
-                window.addLayerGroup('Wayfarer - ' + data.title, layer, true)
+                window.addLayerGroup('Opr - ' + data.title, layer, true)
                 layer.on('click', (e) => {
                     markerClicked(e)
                 })
@@ -394,7 +394,7 @@ function wrapper(pluginInfo) {
                 const portalLatLng = L.latLng(candidate.lat, candidate.lng)
                 const titleMarker = L.marker(portalLatLng, {
                     icon: L.divIcon({
-                        className: 'wayfarer-planner-name',
+                        className: 'opr-planner-name',
                         iconAnchor: [100, 5],
                         iconSize: [200, 10],
                         html: title
@@ -617,7 +617,7 @@ function wrapper(pluginInfo) {
             image = `<a href="${largeImageUrl}" target="_blank" class="imagePreviewContainer"><img class="imagePreview loading" src="${imageUrl}"></a>`
         }
 
-        let formContent = `<div class="wayfarer-planner-popup"><form id="submit-to-wayfarer">
+        let formContent = `<div class="opr-planner-popup"><form id="submit-to-opr">
             <label>Status
             <select name="status">${options}</select>
             </label>
@@ -628,8 +628,8 @@ function wrapper(pluginInfo) {
             <input name="description" type="text" autocomplete="off" placeholder="Description" value="${description}">
             </label>
             ${image}
-            <div class='wayfarer-expander' title='Click to expand additional fields'>»</div>
-            <div class='wayfarer-extraData'>
+            <div class='opr-expander' title='Click to expand additional fields'>»</div>
+            <div class='opr-extraData'>
             ${coordinates}
             <label>Submitter
             <input name="submitter" type="text" value="${nickname}" disabled>
@@ -643,7 +643,7 @@ function wrapper(pluginInfo) {
             </div>
             <input name="id" type="hidden" value="${id}">
             <input name="nickname" type="hidden" value="${window.PLAYER.nickname}">
-            <button type="submit" id='wayfarer-submit'>Send</button>
+            <button type="submit" id='opr-submit'>Send</button>
             </form>`
 
         if (id !== '') {
@@ -679,9 +679,9 @@ function wrapper(pluginInfo) {
             )
         }
         const expander =
-            formpopup._contentNode.querySelector('.wayfarer-expander')
+            formpopup._contentNode.querySelector('.opr-expander')
         expander.addEventListener('click', function () {
-            expander.parentNode.classList.toggle('wayfarer__expanded')
+            expander.parentNode.classList.toggle('opr__expanded')
         })
         const previewImageElement = document.querySelector('.loading')
         previewImageElement.onload = function () {
@@ -717,8 +717,8 @@ function wrapper(pluginInfo) {
                 map.closePopup()
             },
             error: function (x, y, z) {
-                console.log('Wayfarer Planner. Error message: ', x, y, z) // eslint-disable-line no-console
-                alert('Wayfarer Planner. Failed to send data to the scriptURL')
+                console.log('Opr Planner. Error message: ', x, y, z) // eslint-disable-line no-console
+                alert('Opr Planner. Failed to send data to the scriptURL')
             }
         })
     }
@@ -946,7 +946,7 @@ function wrapper(pluginInfo) {
         }
 
         const html = `<p><label for="txtScriptUrl">Url for the script</label><br><input type="url" id="txtScriptUrl" spellcheck="false" placeholder="https://script.google.com/macros/***/exec"></p>
-             <p><a class='wayfarer-refresh'>Update candidate data</a></p>
+             <p><a class='opr-refresh'>Update candidate data</a></p>
              <p><input type="checkbox" id="chkShowTitles"><label for="chkShowTitles">Show titles</label></p>
              <p><input type="checkbox" id="chkShowRadius"><label for="chkShowRadius">Show submit radius</label></p>
              <p><input type="checkbox" id="chkShowInteractRadius"><label for="chkShowInteractRadius">Show interaction radius</label></p>
@@ -961,7 +961,7 @@ function wrapper(pluginInfo) {
         const container = dialog({
             width: 'auto',
             html,
-            title: 'Wayfarer Planner',
+            title: 'Opr Planner',
             buttons: {
                 OK: function () {
                     const newUrl = txtInput.value
@@ -1013,7 +1013,7 @@ function wrapper(pluginInfo) {
         const txtInput = div.querySelector('#txtScriptUrl')
         txtInput.value = settings.scriptURL
 
-        const linkRefresh = div.querySelector('.wayfarer-refresh')
+        const linkRefresh = div.querySelector('.opr-refresh')
         linkRefresh.addEventListener('click', () => {
             settings.scriptURL = txtInput.value
             saveSettings()
@@ -1122,13 +1122,13 @@ function wrapper(pluginInfo) {
             .prop('type', 'text/css')
             .html(
                 `
-            .wayfarer-planner-popup {
+            .opr-planner-popup {
                 width:200px;
             }
-            .wayfarer-planner-popup a {
+            .opr-planner-popup a {
                 color: #ffce00;
             }
-            .wayfarer-planner-name {
+            .opr-planner-name {
                 font-size: 12px;
                 font-weight: bold;
                 color: gold;
@@ -1140,33 +1140,33 @@ function wrapper(pluginInfo) {
             #txtScriptUrl {
                 width: 100%;
             }
-            .wayfarer-planner__disabled {
+            .opr-planner__disabled {
                 opacity: 0.8;
                 pointer-events: none;
             }
 
-            #submit-to-wayfarer {
+            #submit-to-opr {
                 position: relative;
             }
-            #submit-to-wayfarer input,
-            #submit-to-wayfarer select {
+            #submit-to-opr input,
+            #submit-to-opr select {
                 width: 100%;
             }
-            #submit-to-wayfarer input {
+            #submit-to-opr input {
                 color: #CCC;
             }
-            #submit-to-wayfarer label {
+            #submit-to-opr label {
                 margin-top: 5px;
                 display: block;
                 color: #fff;
             }
-            #wayfarer-submit {
+            #opr-submit {
                 height: 30px;
                 margin-top: 10px;
                 width: 100%;
             }
 
-            .wayfarer-expander {
+            .opr-expander {
                 cursor: pointer;
                 transform: rotate(90deg) translate(-1px, 1px);
                 transition: transform .2s ease-out 0s;
@@ -1174,17 +1174,17 @@ function wrapper(pluginInfo) {
                 right: 0;
             }
 
-            .wayfarer-extraData {
+            .opr-extraData {
                 max-height: 0;
                 overflow: hidden;
                 margin-top: 1em;
             }
 
-            .wayfarer__expanded .wayfarer-expander {
+            .opr__expanded .opr-expander {
                 transform: rotate(270deg) translate(1px, -3px);
             }
 
-            .wayfarer__expanded .wayfarer-extraData {
+            .opr__expanded .opr-extraData {
                 max-height: none;
                 margin-top: 0em;
             }
@@ -1210,12 +1210,12 @@ function wrapper(pluginInfo) {
             .toggle-create-waypoints.active{
                 background-color:#ffce00;
             }
-            #submit-to-wayfarer .imagePreviewContainer{
+            #submit-to-opr .imagePreviewContainer{
                 display:block;
                 margin-top:5px;
                 text-align:center;
             }
-            #submit-to-wayfarer .imagePreview{
+            #submit-to-opr .imagePreview{
                 max-width:100%;
                 max-height:150px;
             }
@@ -1272,7 +1272,7 @@ function wrapper(pluginInfo) {
             )
             .appendTo('head')
 
-        $('body').on('submit', '#submit-to-wayfarer', function (e) {
+        $('body').on('submit', '#submit-to-opr', function (e) {
             e.preventDefault()
             map.closePopup()
             $.ajax({
@@ -1300,9 +1300,9 @@ function wrapper(pluginInfo) {
                     }
                 },
                 error: function (x, y, z) {
-                    console.log('Wayfarer Planner. Error message: ', x, y, z) // eslint-disable-line no-console
+                    console.log('Opr Planner. Error message: ', x, y, z) // eslint-disable-line no-console
                     alert(
-                        "Wayfarer Planner. Failed to send data to the scriptURL.\r\nVerify that you're using the right URL and that you don't use any extension that blocks access to google."
+                        "Opr Planner. Failed to send data to the scriptURL.\r\nVerify that you're using the right URL and that you don't use any extension that blocks access to google."
                     )
                 }
             })
@@ -1313,8 +1313,8 @@ function wrapper(pluginInfo) {
         const toolbox = document.getElementById('toolbox')
 
         const toolboxLink = document.createElement('a')
-        toolboxLink.textContent = 'Wayfarer'
-        toolboxLink.title = 'Settings for Wayfarer Planner'
+        toolboxLink.textContent = 'Opr'
+        toolboxLink.title = 'Settings for Opr Planner'
         toolboxLink.addEventListener('click', showDialog)
         toolbox.appendChild(toolboxLink)
 
