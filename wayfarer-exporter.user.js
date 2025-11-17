@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Wayfarer Exporter
+// @name         Opr Exporter
 // @version      0.11
 // @description  Export nominations data from Wayfarer to IITC in Wayfarer Planner
 // @namespace    https://gitlab.com/NvlblNm/wayfarer/
